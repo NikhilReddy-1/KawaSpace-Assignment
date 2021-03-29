@@ -21,8 +21,8 @@ int main()
         error();
     }
     //Connect to the srever
-    ret = connect(c_sock,(struct sockaddr*)&c_info,sizefo(c_info));
-    if(ret == -1){
+    int connfd = connect(c_sock,(struct sockaddr*)&c_info,sizeof(c_info));
+    if(connfd == -1){
         error();
     }
 
@@ -30,7 +30,16 @@ int main()
     system("clear");                        //Clear screen
     printf("\t\tEnter your Username\n\n");
     fgets(username,USERNAME_LEN,stdin);
-    RemoveNewLine(username);                //Remove the '\n' character from end
-    
+    //RemoveNewLine(username);                //Remove the '\n' character from end
+    username[strlen(username)-1] = '\0';
+
+
+    int snn = write(connfd,username,strlen(username)+1);    //Sending username
+    if(snn == -1){
+        printf("Send error\n");
+        exit(0);
+    }
+
+    pthread_t 
 
 }

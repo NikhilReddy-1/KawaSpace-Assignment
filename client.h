@@ -13,7 +13,7 @@
 
 #define MAX_MSG_LEN 1024
 #define USERNAME_LEN 30
-#define PORT 1234
+#define PORT 8080
 
 
 int c_sock = 0;     //Server socket
