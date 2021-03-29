@@ -15,6 +15,8 @@
 #define USERNAME_LEN 30
 #define PORT 8080
 
+char message[MAX_MSG_LEN];
+char username[USERNAME_LEN];
 
 struct u_node{
     int sockfd;
@@ -59,27 +61,30 @@ void UserJoin(int sock,char * username)
 //Driver function for user handling
 void * UserHandler(void * ptr)
 {
-    char Username[USERNAME_LEN] = {};
+    //char Username[USERNAME_LEN];
 
-    //user_node * new_user = (user_node*)malloc(sizeof(user_node));
+    user_node * new_user = (user_node*)malloc(sizeof(user_node));
 
-    int connfd = *((int*)ptr);        //Store sockFD in sturct
+    int connfd = *(int*)ptr;        //Store sockFD in sturct
 
 
-    int ret = read(connfd,Username,30);     //Receive username
+    int ret = read(connfd,new_user->username,31);     //Receive username
     if(ret == -1){
         printf("%s",strerror(errno));
     }
     
-    printf("%s is online\n",Username);
+    printf("%s is online\n",new_user->username);
 
+    UserJoin(connfd,new_user->username);
 
+    while(strcmp(message,"/q") != 0){
+        read(new_user->sockfd,message,1024);
+        if(strcmp(message,"/q") != 0){
+            printf("%s> %s\n",new_user->username,message);
 
-
-
-
-
-
+            //send to all
+        }
+    }
 
 
 

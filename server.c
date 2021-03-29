@@ -5,10 +5,6 @@ int main()
 {
     int ret;
 
-    char message[MAX_MSG_LEN];
-    char username[USERNAME_LEN];
-
-
 
     struct sockaddr_in s_info,c_info;              //Server Socket Info
 
