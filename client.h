@@ -32,3 +32,39 @@ void RemoveNewLine(char * username)
 {
     username[strlen(username) - 1] = '\0';
 }
+
+
+void * SendMessage(){
+    char message[MAX_MSG_LEN];
+
+    while(1){
+        fgets(message,MAX_MSG_LEN,stdin);
+        message[strlen(message)-1] = '\0';
+
+        write(c_sock,message,strlen(message)+1);
+
+        if(strcmp(message,"/q") == 0){
+            printf("Client logged out\n");
+            write(c_sock,message,strlen(message)+1);
+            flag = 1;
+            break;
+        }
+    }
+}
+
+
+void * RecvMessage(){
+    char message[MAX_MSG_LEN];
+
+    while(1){
+        int ret = read(c_sock,message,MAX_MSG_LEN);
+
+        if(ret > 0){
+            printf("%s\n",message);
+        }       
+        else{
+        printf("Error in recvHandler");
+        }
+        break;
+    }
+}

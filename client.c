@@ -26,11 +26,12 @@ int main()
         error();
     }
 
-
-    system("clear");                        //Clear screen
-    printf("\t\tEnter your Username\n\n");
-    fgets(username,USERNAME_LEN,stdin);
-    //RemoveNewLine(username);                //Remove the '\n' character from end
+    strcpy(username,"");
+    //system("clear");                        //Clear screen
+    printf("Enter your Username\n");
+    fgets(username,strlen(username),stdin);
+    //RemoveNewLine(username);
+    //username = "Nikhil";                //Remove the '\n' character from end
     username[strlen(username)-1] = '\0';
 
 
@@ -40,6 +41,23 @@ int main()
         exit(0);
     }
 
-    pthread_t 
+    pthread_t SendHandle;
+    if(pthread_create(&SendHandle,NULL,SendMessage,NULL) != 0){
+        error();
+    }
 
+    pthread_t RecvHandle;
+    if(pthread_create(&RecvHandle,NULL,RecvMessage,NULL) != 0){
+        error();
+    }
+
+    while(1){
+        if(flag == 1){
+            break;
+        }
+    }
+
+    close(c_sock);
+
+    return 0;
 }
