@@ -41,7 +41,7 @@ void * SendMessage(void * ptr){
         fgets(message,1024,stdin);
         message[strlen(message)-1] = '\0';
 
-        //printf("TEST:%s\n",message);
+        printf("You > %s\n",message);
 
         int ret = write(c_sock,message,strlen(message)+1);
         if(ret == -1){
@@ -49,7 +49,7 @@ void * SendMessage(void * ptr){
         }
 
 
-        if(strcmp(message,"/q") == 0){
+        if(strncmp(message,"/q",2) == 0){
             printf("Client logged out\n");
             write(c_sock,message,strlen(message)+1);
             flag = 1;

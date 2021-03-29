@@ -67,7 +67,7 @@ void UserJoin(int sock,char * username)
     
     strcpy(temp,"");
     strcpy(temp,username);
-    strcat(temp,"has entered the chat");
+    strcat(temp," has entered the chat");
 
     for(int i=0;i<user_count;i++){
         if(sockarr[i] != sock){
@@ -94,12 +94,12 @@ void * UserHandler(void * ptr)
     printf("%s is online\n",new_user->username);
 
     UserJoin(connfd,new_user->username);
-    while(strcmp(message,"/q") != 0){
+    while(strncmp(message,"/q",2) != 0){
         ret = read(connfd,message,1024);
         if(ret == -1){
             error();
         }
-        if(strcmp(message,"/q") != 0){
+        if(strncmp(message,"/q",2) != 0){
             printf("%s> %s\n",new_user->username,message);
             SendMessage(connfd,message,new_user->username);
         }else{
