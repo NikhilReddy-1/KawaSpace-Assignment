@@ -42,12 +42,12 @@ int main()
     }
 
     pthread_t SendHandle;
-    if(pthread_create(&SendHandle,NULL,SendMessage,NULL) != 0){
+    if(pthread_create(&SendHandle,NULL,SendMessage,(void*)&connfd) != 0){
         error();
     }
 
     pthread_t RecvHandle;
-    if(pthread_create(&RecvHandle,NULL,RecvMessage,NULL) != 0){
+    if(pthread_create(&RecvHandle,NULL,RecvMessage,(void*)&connfd) != 0){
         error();
     }
 

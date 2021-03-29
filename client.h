@@ -34,14 +34,20 @@ void RemoveNewLine(char * username)
 }
 
 
-void * SendMessage(){
-    char message[MAX_MSG_LEN];
-
+void * SendMessage(void * ptr){
+    char message[1024];
+    
     while(1){
-        fgets(message,MAX_MSG_LEN,stdin);
+        fgets(message,1024,stdin);
         message[strlen(message)-1] = '\0';
 
-        write(c_sock,message,strlen(message)+1);
+        //printf("TEST:%s\n",message);
+
+        int ret = write(c_sock,message,strlen(message)+1);
+        if(ret == -1){
+            error();
+        }
+
 
         if(strcmp(message,"/q") == 0){
             printf("Client logged out\n");
@@ -54,17 +60,17 @@ void * SendMessage(){
 
 
 void * RecvMessage(){
-    char message[MAX_MSG_LEN];
-
-    while(1){
-        int ret = read(c_sock,message,MAX_MSG_LEN);
-
-        if(ret > 0){
-            printf("%s\n",message);
-        }       
-        else{
-        printf("Error in recvHandler");
+    char buff[1024];
+    while (1) {
+        bzero(&buff,sizeof(buff));
+        int receive = read(c_sock, buff, 1024);	//dexetai to mhnyma, to kanoyme etsi gt otan h metavlith pairnei thn timh 1 
+	if (receive > 0) {			//tote doulevei swsta alliws an einai 0 tote apetyxe
+            printf("%s\n", buff);
         }
-        break;
+		else{
+			printf("error in recvHandler....\n");
+            break;
+        }
+		
     }
 }
