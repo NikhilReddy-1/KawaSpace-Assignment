@@ -42,6 +42,23 @@ void error()
     exit(1);
 }
 
+void SendMessage(int sock,char * buff,char * uname)
+{
+    char temp[USERNAME_LEN];
+
+    strcpy(temp,"");
+    strcpy(temp,uname);
+    strcat(temp,"> ");
+    strcat(temp,buff);
+
+    for(int i=0;i<user_count;i++){
+        if(sockarr[i] != sock){
+            write(sockarr[i],temp,1024);
+        }
+    }
+}
+
+
 //Announcing to other users that a user has entered the chat
 void UserJoin(int sock,char * username)
 {
@@ -76,18 +93,19 @@ void * UserHandler(void * ptr)
     printf("%s is online\n",new_user->username);
 
     UserJoin(connfd,new_user->username);
-
     while(strcmp(message,"/q") != 0){
-        read(new_user->sockfd,message,1024);
+        ret = read(connfd,message,1024);
+        if(ret == -1){
+            error();
+        }
         if(strcmp(message,"/q") != 0){
             printf("%s> %s\n",new_user->username,message);
-
-            //send to all
+            SendMessage(connfd,message,new_user->username);
+        }else{
+            printf("%s has left the chat\n",new_user->username);
+            user_count--;
         }
     }
-
-
-
 
 
 }
