@@ -53,7 +53,8 @@ void SendMessage(int sock,char * buff,char * uname)
 
     for(int i=0;i<user_count;i++){
         if(sockarr[i] != sock){
-            write(sockarr[i],temp,1024);
+            write(sockarr[i],temp,strlen(temp));
+            printf("Sent to %d\n",sockarr[i]);
         }
     }
 }
