@@ -21,12 +21,14 @@ int main()
 
     while(r_flag == 0){
         flag = 0;
-        printf("Enter your choice\n");
+        system("clear");
+        printf("Enter your choice\n\n\t/c for chat\n\t/x to exit");
         scanf("%s",choice);
         printf("Choice is %s\n",choice);
         while((getchar()) != '\n');
 
         if(strcmp(choice,"/c") == 0){                   //"/c" condition
+            system("clear");
             c_sock = socket(AF_INET,SOCK_STREAM,0);
             if(c_sock == -1){
                 error();

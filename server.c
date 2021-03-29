@@ -21,7 +21,7 @@ int main()
         error();
     }
 
-    if(setsockopt(s_sock,SOL_SOCKET, SO_REUSEADDR, &(int){1}, sizeof(int))<0){
+    if(setsockopt(s_sock,SOL_SOCKET, SO_REUSEADDR, &(int){1}, sizeof(int))<0){      //Use SO_REUSEADDR for repeated execution
         error();
     }
 
