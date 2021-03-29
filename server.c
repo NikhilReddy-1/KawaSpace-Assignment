@@ -10,7 +10,9 @@ int main()
 
 
 
-    struct sockaddr_in s_info;              //Server Socket Info
+    struct sockaddr_in s_info,c_info;              //Server Socket Info
+
+    int c_len = sizeof(c_info);
 
     s_info.sin_family = AF_INET;            //IPv4 Protocol
     s_info.sin_port = htons(PORT);          //Host to Network short
@@ -23,7 +25,7 @@ int main()
         error();
     }
     //Bind socket
-    ret = bind(s_sock,(struct sockaddr*)&s_info,sizefo(s_info));
+    ret = bind(s_sock,(struct sockaddr*)&s_info,sizeof(s_info));
     if(ret == -1){
         error();
     }
@@ -32,5 +34,32 @@ int main()
     if(ret == -1){
         error();
     }
+
+    printf("Listening for connection\n");
+
+    while(1){
+        sockfd1 = accept(s_sock,(struct sockaddr*)&c_info,(socklen_t*)&c_len);
+        if(sockfd1 == -1){
+            error();
+        }
+        strcpy(message,"");
+
+        sockarr[user_count] = sockfd1;
+        user_count++;
+
+        ret = pthread_create(&thread1,NULL,UserHandler,(void*)&sockfd1);
+        if(ret == -1){
+            error();
+        }
+
+
+    }
+    close(s_sock);
+    printf("Connection closed\n");
+    pthread_join(thread1,NULL);
+    close(sockfd1);
+
+    return 0;
+
 
 }
