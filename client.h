@@ -38,10 +38,11 @@ void * SendMessage(void * ptr){
     char message[1024];
     
     while(1){
+        printf("You > ");
         fgets(message,1024,stdin);
         message[strlen(message)-1] = '\0';
 
-        printf("You > %s\n",message);
+        //printf("You > %s\n",message);
 
         int ret = write(c_sock,message,strlen(message)+1);
         if(ret == -1){
