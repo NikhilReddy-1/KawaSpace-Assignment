@@ -3,7 +3,7 @@
 
 int main()
 {
-    int ret;
+    int ret;        //Return value for various checks
 
 
     struct sockaddr_in s_info,c_info;              //Server Socket Info
@@ -20,6 +20,11 @@ int main()
     if(s_sock == -1){
         error();
     }
+
+    if(setsockopt(s_sock,SOL_SOCKET, SO_REUSEADDR, &(int){1}, sizeof(int))<0){
+        error();
+    }
+
     //Bind socket
     ret = bind(s_sock,(struct sockaddr*)&s_info,sizeof(s_info));
     if(ret == -1){
@@ -30,26 +35,27 @@ int main()
     if(ret == -1){
         error();
     }
-
+    system("clear");        //Clear terminal screen
     printf("Listening for connection\n");
 
     while(1){
-        sockfd1 = accept(s_sock,(struct sockaddr*)&c_info,(socklen_t*)&c_len);
+        sockfd1 = accept(s_sock,(struct sockaddr*)&c_info,(socklen_t*)&c_len);      //Accept Connection from client
         if(sockfd1 == -1){
             error();
         }
         strcpy(message,"");
 
-        sockarr[user_count] = sockfd1;
+        sockarr[user_count] = sockfd1;          //Add client's sockFD to array
         user_count++;
 
-        ret = pthread_create(&thread1,NULL,UserHandler,(void*)&sockfd1);
+        ret = pthread_create(&thread1,NULL,UserHandler,(void*)&sockfd1);    //Create new thread for client
         if(ret == -1){
             error();
         }
 
 
     }
+    //Exit cleanup
     close(s_sock);
     printf("Connection closed\n");
     pthread_join(thread1,NULL);
