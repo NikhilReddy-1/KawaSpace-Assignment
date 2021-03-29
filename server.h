@@ -76,6 +76,21 @@ void UserJoin(int sock,char * username)
     }
 }
 
+void UserExit(int sock,char * username)
+{
+    char temp[30];
+    
+    strcpy(temp,"");
+    strcpy(temp,username);
+    strcat(temp," has left the chat");
+
+    for(int i=0;i<user_count;i++){
+        if(sockarr[i] != sock){
+            write(sockarr[i],temp,MAX_MSG_LEN);
+        }
+    }
+}
+
 //Driver function for user handling
 void * UserHandler(void * ptr)
 {
@@ -104,6 +119,7 @@ void * UserHandler(void * ptr)
             SendMessage(connfd,message,new_user->username);
         }else{
             printf("%s has left the chat\n",new_user->username);
+            UserExit(connfd,new_user->username);
             user_count--;
         }
     }
