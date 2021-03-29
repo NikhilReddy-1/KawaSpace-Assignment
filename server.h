@@ -8,13 +8,22 @@
 #include <netinet/in.h> //Inet Protocols
 #include <arpa/inet.h>  //Internet Operations
 #include <pthread.h>    //Multithreading Library
+#include <errno.h>       //Error handling
 
 
 #define MAX_MSG_LEN 1024
 #define USERNAME_LEN 30
+#define PORT 1234
 
 
 int s_sock = 0;     //Server socket
 int flag = 0;       //Termination flag
 
 
+//Error return function using perror
+void error()
+{
+    fprintf(stderr,"\nERROR VAL:%d\n",errno);
+    fprintf(stderr,"%s\n",strerror(errno));
+    exit(1);
+}
